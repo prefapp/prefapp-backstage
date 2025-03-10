@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-app
+spec:
+  replicas: 
+  selector:
+    matchLabels:
+      {{- toYaml .Values.backstage.labels | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- toYaml .Values.backstage.labels | nindent 8 }}
+    spec:
+      containers:
+        {{- with .Values.backstage.container }}
+        - name: {{ .name }}
+          image: {{ .image.name }}:{{ .image.tag }}
+          imagePullPolicy: {{ .image.pullPolicy }}
+          ports:
+          - name: {{ .ports.name }}
+            containerPort: {{ .ports.containerPort }}
+        {{- end }}
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-secret-postgres
+            - secretRef: 
+                name: {{ .Release.Name }}-secret-github-app
+            - configMapRef:
+                name: {{ .Release.Name }}-config

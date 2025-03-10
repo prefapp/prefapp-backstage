@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-postgres
+spec:
+  replicas: 
+  selector:
+    matchLabels:
+        {{- toYaml .Values.postgres.labels | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- toYaml .Values.postgres.labels | nindent 8 }}
+    spec:
+      containers:
+        {{- with .Values.postgres.container }}
+        - name: {{ .name }}
+          image: {{ .image.name }}:{{ .image.tag }}
+          imagePullPolicy: {{ .image.pullPolicy }}
+          volumeMounts:
+            - name: {{ .volumeMounts.name }} 
+              mountPath: {{ .volumeMounts.path }}
+              subPath: {{ .volumeMounts.subPath }}
+          ports:
+          - containerPort: {{ .ports.containerPort }}
+        {{- end}}
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-secret-postgres 
+            - configMapRef:
+                name: {{ .Release.Name }}-config
+      volumes:
+        - name: {{ .Values.postgres.volumes.name }}
+          hostPath: 
+            path: {{ .Values.postgres.volumes.hostPath }}

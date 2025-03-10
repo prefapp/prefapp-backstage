@@ -1,0 +1,86 @@
+backstage:
+  container:
+    image:
+      name: backstage
+      pullPolicy: IfNotPresent
+      tag: latest
+    name: backstage
+    ports:
+      containerPort: 7007
+      name: http
+  labels:
+    app: backstage
+  svc:
+    ports:
+    - name: http
+      port: 80
+      targetPort: http
+
+postgres:
+  container:
+    image:
+      name: postgres
+      pullPolicy: IfNotPresent
+      tag: 13.2-alpine
+    name: postgres
+    ports:
+      containerPort: 5432
+    volumeMounts:
+      name: postgresdb
+      path: /var/lib/postgresql/data
+      subPath: data
+  labels:
+    app: postgres
+  svc:
+    ports:
+    - port: 5432
+  volumes:
+    name: postgresdb
+    hostPath: /backstage
+
+config:
+  data:
+    POSTGRES_HOST: postgres-svc
+    POSTGRES_PORT: "5432"
+
+secret:
+  github:
+    data:
+      AUTH_APP_PRIVATE_KEY: |
+        "-----BEGIN RSA PRIVATE KEY-----
+        MIIEowIBAAKCAQEAzbrnHU8FMzO9196lzvqe2DYou4KiDS5dibH7GRvf1VZnTCgC
+        Q/dZnVuf8lw8QVZEcbv3XYar5zPXO9UKcYo2g0sC5ne30ZNZ+eX6G8cPuXFhvo4a
+        pRgrrBKlPKTgdd6pe/Fot70x12HOBuUj9ooDqSRqF9XSpdTieztGVyDYPLqGmORQ
+        DTgxfpnnUr5RSTPUAqUJBS97Kg3HJJat1slGle2f1ekLNUPbIgAchQJ18Ov/ZwcA
+        iesV1mt0p8MGOfBPGBJPCayttfILTO2UckXcCC38emlS+CS3uh6RGZH2LX6XVU4Y
+        VDQirZOf7G1piCD2eZ/KxYweEGONSe2On2qjLQIDAQABAoIBAQDMj/SwattDz0YM
+        eMGr7f22BRw5XqpdquWtPcDsdY/6ZECwM/QUusVrtyhyZ44udWX3JSzQ3VDewuhY
+        APyyavjLUfHfUdkAVaEY37jyl9uly/yh6lDKKh96qMuOYm8iJLWnnSI/2KrPe9vN
+        dVhuE0uSirfHXYBoDibo28aUaf85WYFxMeYJrs5/TwXQuq223LImGf5TkyEBbvHS
+        HX6NWELoFMxrWffev25X6lCvfSWQb0/+3z/GmSstwR/gm7y1Ncxq8jjRqAMDzzmF
+        XmX2gpLkwZGxHmDTmUj1SmflQsd2n0m1HFNenIJ+Q34Qdl1hikkrCMq65RRzZ0sW
+        gFb3CE3BAoGBAPYAj1Rm7IQEQoBeXQJCSJ1GS3rFI5HFyMjIF0zpOetwVhyk9jGx
+        Lt3XDxYDFkT6aQApcfyRO+OLU0EuRu+rViqU62EnF+cd7VMJ0gyJheGooIPeu5q3
+        GkosuFg7Y3Nkwnnu78pt6T+NMyRwZlWawU4wuIjwGopzBUxxz02eBd0dAoGBANYX
+        WLbS+JPeHHhs8osPYRCEKfzi0Fd7QFlgVqE03+ScdxSwqIqbAemN/YkJSIa5N0oX
+        4CAstaXdqU4hYcsiWcGTBkrSY3p65ETnVZzAC3NYidfnF/E/qVFC0sgB9K5AU624
+        Hr9PtslkTvG9c3Yn0rJLFnZ7DcWhXk5uAw4fR9FRAoGAOaIj8kgyvTMqSVzSOYdB
+        7+baJCcvkCVgRvnpy5EQisJEym0zaKz0J/EMjcGnY/2uv+T12ZBFEahAlxK6d8gS
+        ZeOByb8Y8IKoaT3xwhIuFZImGP8DwNmJBTu47KLtR8mhbmO2NhzN+p+gDbdvojqh
+        cyoi8aIe9bTA1woK4UpWYVkCgYAcx6KrYQz9g7w8DBlGzFh2Ce5DCpKLUAxEd4jt
+        vtfiOY5gf6cIivHk3auZgl/3jGp8UV1VteztUTDzSdWFoyaBuSv9Xu70hhStlpOR
+        sNdZOCu/lFdJnQ8710nSjUDBM/CLx9aKTUL7K7rZEGi3F39hbGqmnsApMxokXPGY
+        MmhLIQKBgBnk2cplN/jhy4H12ocfb8Y2sznT911UFIiRQZ1caaUVqNrWHON5BRWg
+        t60uLSMS5tXcR607zXzxpLw9au0q8NlUakQXxEkWsEYy9lE7L3HaFHfiq+os2HVn
+        8/T+1LegkaVusbDGRYn1tdmVqcZfCpD7xm8ahG+b5OPO+38DCA8p
+        -----END RSA PRIVATE KEY-----"
+      AUTH_GITHUB_APP_ID: "1165413"
+      AUTH_GITHUB_CLIENT_ID: "Iv23liNNxtpmkmfzqxpn"
+      AUTH_GITHUB_CLIENT_SECRET: "232970b77945ba2d50d3063665388cfe2657e7ee"
+      AUTH_WEBHOOK_SECRET: "232970b77945ba2d50d3063665388cfe2657e7ee"
+      OAUTH_CLIENT_ID: "Ov23liwBPzcPfLykwya2" 
+      OAUTH_CLIENT_SECRET: "7e22154b7ad674f507f55546f9c0b51358794d8b" 
+  postgres:
+    data:
+      POSTGRES_PASSWORD: YmFja3N0YWdl
+      POSTGRES_USER: YmFja3N0YWdl
