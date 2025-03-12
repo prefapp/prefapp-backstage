@@ -106,33 +106,33 @@ catalog:
     pullRequestBranchName: backstage-integration
   rules:
     - allow: [Component, Template, API, Group, User, Resource, System, Domain, Location]
-  locations:
+  locations: {}
     # Local example data, file locations are relative to the backend process, typically `packages/backend`
-    - type: file
-      target: ../../examples/entities.yaml
+    #- type: file
+    #  target: ../../examples/entities.yaml
 
-    # Local example template
-    - type: file
-      target: ../../examples/template/template.yaml
-      rules:
-        - allow: [Template]
+    ## Local example template
+    #- type: file
+    #  target: ../../examples/template/template.yaml
+    #  rules:
+    #    - allow: [Template]
 
-    # Local example organizational data
-    - type: file
-      target: ../../examples/org.yaml
-      rules:
-        - allow: [User, Group]
-  providers:
-    github:
-      prefapOrg:
-        organization: 'prefapp' 
-        catalogPath: '/*.yaml'
-        filters:
-          branch: "pruebas-backstage" #"fix/add-spec-owner"
-          repository: 'catalog'
-        schedule: 
-          frequency: { minutes: 30 }
-          timeout: { minutes: 3 }
+    ## Local example organizational data
+    #- type: file
+    #  target: ../../examples/org.yaml
+    #  rules:
+    #    - allow: [User, Group]
+  providers: {}
+    #github:
+    #  prefapOrg:
+    #    organization: 'prefapp' 
+    #    catalogPath: '/*.yaml'
+    #    filters:
+    #      branch: "pruebas-backstage" #"fix/add-spec-owner"
+    #      repository: 'catalog'
+    #    schedule: 
+    #      frequency: { minutes: 30 }
+    #      timeout: { minutes: 3 }
     ## Uncomment these lines to add more example data
     # - type: url
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/all.yaml
@@ -147,7 +147,17 @@ catalog:
   useUrlReadersSearch: true
 
 kubernetes:
-  # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options
+  serviceLocatorMethod:
+    type: 'multiTenant'
+  clusterLocatorMethods:
+    - type: 'config'
+      clusters:
+        - url: https://demoinfra-k8s-ooe4cyk2.hcp.westeurope.azmk8s.io
+          name: prefapp-backstage
+          authProvider: 'serviceAccount'
+          skipTLSVerify: true
+          skipMetricsLookup: false
+          serviceAccountToken: ${TOKEN_SERVICE_ACCOUNT}
 
 # see https://backstage.io/docs/permissions/getting-started for more on the permission framework
 permission:

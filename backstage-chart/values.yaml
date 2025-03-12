@@ -1,8 +1,8 @@
 backstage:
   container:
     image:
-      name: backstage
-      pullPolicy: IfNotPresent
+      name: prefappacr.azurecr.io/backstage
+      pullPolicy: Always
       tag: latest
     name: backstage
     ports:
@@ -31,6 +31,7 @@ postgres:
       subPath: data
   labels:
     app: postgres
+    'backstage.io/kubernetes-id': example-website
   svc:
     ports:
     - port: 5432

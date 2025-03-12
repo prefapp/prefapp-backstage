@@ -17,10 +17,10 @@ spec:
         - name: {{ .name }}
           image: {{ .image.name }}:{{ .image.tag }}
           imagePullPolicy: {{ .image.pullPolicy }}
-          volumeMounts:
-            - name: {{ .volumeMounts.name }} 
-              mountPath: {{ .volumeMounts.path }}
-              subPath: {{ .volumeMounts.subPath }}
+            #volumeMounts:
+            #  - name: {{ .volumeMounts.name }} 
+            #    mountPath: {{ .volumeMounts.path }}
+            #    subPath: {{ .volumeMounts.subPath }}
           ports:
           - containerPort: {{ .ports.containerPort }}
         {{- end}}
@@ -29,7 +29,9 @@ spec:
                 name: {{ .Release.Name }}-secret-postgres 
             - configMapRef:
                 name: {{ .Release.Name }}-config
-      volumes:
-        - name: {{ .Values.postgres.volumes.name }}
-          hostPath: 
-            path: {{ .Values.postgres.volumes.hostPath }}
+                  #volumes:
+                  #  - name: {{ .Values.postgres.volumes.name }}
+                  #    #hostPath: 
+                  #    #  path: {{ .Values.postgres.volumes.hostPath }}
+                  #    persistentVolumeClaim:
+                  #      claimName: {{ .Release.Name }}-volume-claim

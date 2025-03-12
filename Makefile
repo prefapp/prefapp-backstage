@@ -9,6 +9,13 @@ deploy:
 clean:
 	kind delete cluster -n backstage
 
+azure-deploy:
+	yarn --cwd backstage build:backend
+	docker image build backstage -f backstage/packages/backend/Dockerfile --tag prefappacr.azurecr.io/backstage:latest
+	docker push prefappacr.azurecr.io/backstage:latest
+	helm install backstage backstage-chart -n backstage --create-namespace
+
+
 init: clean build deploy 
 
 redeploy: clean deploy
