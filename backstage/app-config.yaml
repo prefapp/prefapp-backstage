@@ -157,7 +157,6 @@ kubernetes:
           authProvider: 'serviceAccount'
           skipTLSVerify: true
           skipMetricsLookup: false
-          serviceAccountToken: ${TOKEN_SERVICE_ACCOUNT}
 
 # see https://backstage.io/docs/permissions/getting-started for more on the permission framework
 permission:

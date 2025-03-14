@@ -34,3 +34,4 @@ spec:
                 name: {{ .Release.Name }}-secret-github-app
             - configMapRef:
                 name: {{ .Release.Name }}-config
+      serviceAccount: {{ .Release.Name }}-serviceaccount
