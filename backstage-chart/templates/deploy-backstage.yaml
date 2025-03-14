@@ -21,6 +21,12 @@ spec:
           - name: {{ .ports.name }}
             containerPort: {{ .ports.containerPort }}
         {{- end }}
+          env:
+          - name: TOKEN_SERVICE_ACCOUNT 
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-secret-sa
+                key: token
           envFrom:
             - secretRef:
                 name: {{ .Release.Name }}-secret-postgres
@@ -28,3 +34,4 @@ spec:
                 name: {{ .Release.Name }}-secret-github-app
             - configMapRef:
                 name: {{ .Release.Name }}-config
+      serviceAccount: {{ .Release.Name }}-serviceaccount
